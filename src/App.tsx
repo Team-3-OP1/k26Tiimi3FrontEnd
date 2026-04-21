@@ -1,10 +1,15 @@
 import "./css/App.css";
-import ProductPage from "./pages/ProductPage";
+import { Link, Outlet } from "react-router";
 
 function App() {
   return (
     <div className="App">
-      <ProductPage />
+      <nav>
+        <Link to="/">Home</Link>
+        <Link to="/products">Products</Link>
+        <Link to="/about">About Us</Link>
+      </nav>
+      <Outlet />
     </div>
   );
 }
