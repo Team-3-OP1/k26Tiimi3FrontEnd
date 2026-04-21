@@ -1,3 +1,5 @@
+import type { Manufacturer } from "./Manufacturer";
+
 export interface Product {
   id: number;
   name: string;
@@ -5,5 +7,5 @@ export interface Product {
   color: string;
   size: string;
   price: number;
-  manufacturer: string;
+  manufacturer: Manufacturer;
 }
