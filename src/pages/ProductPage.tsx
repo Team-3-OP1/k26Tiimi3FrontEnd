@@ -1,7 +1,7 @@
-import type { Product } from "./types/Product";
-import { fetchProducts } from "./api/items";
+import type { Product } from "../types/Product";
+import { fetchProducts } from "../api/items";
 import { useEffect, useState } from "react";
-import "./ProductPage.css";
+import "../css/ProductPage.css";
 
 export default function ProductPage() {
   const [products, setProducts] = useState<Product[]>([]);
