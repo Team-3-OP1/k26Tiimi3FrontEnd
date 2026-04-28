@@ -4,7 +4,6 @@ export default function HomePage() {
   return (
     <main className="home-page">
       <section className="home-hero">
-        <p className="home-page__eyebrow">Team 3</p>
         <h1 className="home-page__title">Welcome to the Product Catalog</h1>
         <p className="home-page__description">
           Explore our dog product selection and discover clothes, food, toys,

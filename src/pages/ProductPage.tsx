@@ -89,7 +89,9 @@ export default function ProductPage() {
               </div>
               <div>
                 <dt>Manufacturer</dt>
-                <dd>{product.manufacturer.name}</dd>
+                <a href={`/manufacturers/${product.manufacturer.id}/products`}>
+                  {product.manufacturer.name}
+                </a>
               </div>
             </dl>
           </li>
