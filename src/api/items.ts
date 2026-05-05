@@ -1,5 +1,18 @@
 import type { Product } from "../types/Product";
 
+type ApiProductType = {
+  id: number;
+  name?: string;
+  nimi?: string;
+};
+
+function normalizeProductType(productType?: ApiProductType): Product["type"] {
+  return {
+    id: productType?.id ?? 0,
+    name: productType?.name ?? productType?.nimi ?? "Unknown",
+  };
+}
+
 type ApiManufacturer = {
   id: number;
   name: string;
@@ -8,8 +21,8 @@ type ApiManufacturer = {
 type ApiProduct = {
   id: number;
   name: string;
-  type: string;
-  color: string;
+  type?: ApiProductType;
+  tyyppi?: ApiProductType;
   size: string;
   price: number;
   manufacturer?: ApiManufacturer;
@@ -27,8 +40,7 @@ export async function fetchProducts(): Promise<Product[]> {
   return data.map((product) => ({
     id: product.id,
     name: product.name,
-    type: product.type,
-    color: product.color,
+    type: normalizeProductType(product.type ?? product.tyyppi),
     size: product.size,
     price: product.price,
     manufacturer: product.manufacturer ??
@@ -49,8 +61,7 @@ export async function fetchManufacturerProducts(
   return data.map((product) => ({
     id: product.id,
     name: product.name,
-    type: product.type,
-    color: product.color,
+    type: normalizeProductType(product.type ?? product.tyyppi),
     size: product.size,
     price: product.price,
     manufacturer: product.manufacturer ??

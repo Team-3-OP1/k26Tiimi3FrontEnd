@@ -77,11 +77,7 @@ export default function ManufacturerPage() {
               <dl className="product-meta">
                 <div>
                   <dt>Type</dt>
-                  <dd>{product.type}</dd>
-                </div>
-                <div>
-                  <dt>Color</dt>
-                  <dd>{product.color}</dd>
+                  <dd>{product.type.name}</dd>
                 </div>
                 <div>
                   <dt>Size</dt>
