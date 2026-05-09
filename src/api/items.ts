@@ -23,7 +23,8 @@ type ApiProduct = {
   name: string;
   type?: ApiProductType;
   tyyppi?: ApiProductType;
-  size: string;
+  size?: string;
+  koko?: string;
   price: number;
   manufacturer?: ApiManufacturer;
   valmistaja?: ApiManufacturer;
@@ -41,7 +42,7 @@ export async function fetchProducts(): Promise<Product[]> {
     id: product.id,
     name: product.name,
     type: normalizeProductType(product.type ?? product.tyyppi),
-    size: product.size,
+    size: product.size ?? product.koko ?? "-",
     price: product.price,
     manufacturer: product.manufacturer ??
       product.valmistaja ?? { id: 0, name: "Unknown" },
@@ -62,7 +63,7 @@ export async function fetchManufacturerProducts(
     id: product.id,
     name: product.name,
     type: normalizeProductType(product.type ?? product.tyyppi),
-    size: product.size,
+    size: product.size ?? product.koko ?? "-",
     price: product.price,
     manufacturer: product.manufacturer ??
       product.valmistaja ?? { id: 0, name: "Unknown" },

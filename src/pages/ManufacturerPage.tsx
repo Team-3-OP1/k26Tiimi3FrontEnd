@@ -1,8 +1,18 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import type { Product } from "../types/Product";
-import "../css/ManufacturerPage.css";
 import { fetchManufacturerProducts } from "../api/items";
+import {
+  Alert,
+  Card,
+  CardContent,
+  Chip,
+  Container,
+  Divider,
+  Grid,
+  Stack,
+  Typography,
+} from "@mui/material";
 
 export default function ManufacturerPage() {
   const [manufacturerProducts, setManufacturerProducts] = useState<Product[]>(
@@ -35,59 +45,103 @@ export default function ManufacturerPage() {
 
   if (loading) {
     return (
-      <main className="manufacturer-page manufacturer-page--state">
-        <p>Loading...</p>
-      </main>
+      <Container component="main" maxWidth="lg" sx={{ py: { xs: 4, md: 7 } }}>
+        <Typography color="text.secondary">Loading...</Typography>
+      </Container>
     );
   }
 
   if (error) {
     return (
-      <main className="manufacturer-page manufacturer-page--state">
-        <p>Error: {error}</p>
-      </main>
+      <Container component="main" maxWidth="lg" sx={{ py: { xs: 4, md: 7 } }}>
+        <Alert severity="error">Error: {error}</Alert>
+      </Container>
     );
   }
 
   return (
-    <main className="manufacturer-page">
-      <header className="manufacturer-page__header">
-        <div>
-          <h1 className="manufacturer-page__title">{manufacturerName}</h1>
-          <p className="manufacturer-page__subtitle">
-            {manufacturerProducts.length} products
-          </p>
-        </div>
-        <p className="manufacturer-page__lead">
-          Browse the latest items from {manufacturerName}.
-        </p>
-      </header>
+    <Container component="main" maxWidth="lg" sx={{ py: { xs: 4, md: 7 } }}>
+      <Stack spacing={3}>
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          sx={{
+            justifyContent: "space-between",
+            alignItems: { xs: "flex-start", sm: "center" },
+          }}
+          spacing={2}
+        >
+          <Stack spacing={0.5}>
+            <Typography variant="h3" component="h1">
+              {manufacturerName}
+            </Typography>
+            <Typography color="text.secondary">
+              Browse the latest items from {manufacturerName}.
+            </Typography>
+          </Stack>
+          <Chip
+            color="secondary"
+            label={`${manufacturerProducts.length} products`}
+            sx={{
+              height: 44,
+              borderRadius: 999,
+              px: 1,
+              "& .MuiChip-label": {
+                fontSize: "1rem",
+                fontWeight: 700,
+              },
+            }}
+          />
+        </Stack>
 
-      <section aria-live="polite">
-        <ul className="manufacturer-page__product-list">
+        <Grid container spacing={2.5} aria-live="polite">
           {manufacturerProducts.map((product) => (
-            <li key={product.id} className="manufacturer-page__product-item">
-              <div className="manufacturer-page__card-top">
-                <h2 className="product-name">{product.name}</h2>
-                <div className="product-price">
-                  {currencyFormatter.format(product.price)}
-                </div>
-              </div>
+            <Grid key={product.id} size={{ xs: 12, md: 6 }}>
+              <Card sx={{ height: "100%" }}>
+                <CardContent>
+                  <Stack
+                    direction="row"
+                    sx={{ justifyContent: "space-between", gap: 2 }}
+                  >
+                    <Typography variant="h5" component="h2">
+                      {product.name}
+                    </Typography>
+                    <Typography
+                      variant="h6"
+                      color="secondary"
+                      sx={{ fontWeight: 700 }}
+                    >
+                      {currencyFormatter.format(product.price)}
+                    </Typography>
+                  </Stack>
 
-              <dl className="product-meta">
-                <div>
-                  <dt>Type</dt>
-                  <dd>{product.type.name}</dd>
-                </div>
-                <div>
-                  <dt>Size</dt>
-                  <dd>{product.size}</dd>
-                </div>
-              </dl>
-            </li>
+                  <Divider sx={{ my: 1.75 }} />
+
+                  <Stack spacing={1.25}>
+                    <Stack
+                      direction="row"
+                      sx={{ justifyContent: "space-between", gap: 2 }}
+                    >
+                      <Typography color="text.secondary">Type</Typography>
+                      <Typography sx={{ fontWeight: 600 }}>
+                        {product.type.name}
+                      </Typography>
+                    </Stack>
+                    <Stack
+                      direction="row"
+                      sx={{ justifyContent: "space-between", gap: 2 }}
+                    >
+                      <Typography color="text.secondary">Size</Typography>
+                      <Typography sx={{ fontWeight: 600 }}>
+                        {product.size}
+                      </Typography>
+                    </Stack>
+                  </Stack>
+                </CardContent>
+              </Card>
+            </Grid>
           ))}
-        </ul>
-      </section>
-    </main>
+        </Grid>
+      </Stack>
+    </Container>
   );
 }

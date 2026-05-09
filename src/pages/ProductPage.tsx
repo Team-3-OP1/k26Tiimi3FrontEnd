@@ -1,7 +1,19 @@
 import type { Product } from "../types/Product";
 import { fetchProducts } from "../api/items";
 import { useEffect, useState } from "react";
-import "../css/ProductPage.css";
+import {
+  Alert,
+  Card,
+  CardContent,
+  Chip,
+  Container,
+  Divider,
+  Grid,
+  Link,
+  Stack,
+  Typography,
+} from "@mui/material";
+import { Link as RouterLink } from "react-router";
 
 export default function ProductPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -23,23 +35,29 @@ export default function ProductPage() {
 
   if (loading) {
     return (
-      <main className="product-page product-page--state">
-        <p className="product-page__eyebrow">Catalog</p>
-        <h1 className="product-page__title">Products</h1>
-        <p className="product-page__message">Loading products...</p>
-      </main>
+      <Container component="main" maxWidth="lg" sx={{ py: { xs: 4, md: 7 } }}>
+        <Stack spacing={2}>
+          <Typography variant="overline">Catalog</Typography>
+          <Typography variant="h3" component="h1">
+            Products
+          </Typography>
+          <Typography color="text.secondary">Loading products...</Typography>
+        </Stack>
+      </Container>
     );
   }
 
   if (error) {
     return (
-      <main className="product-page product-page--state">
-        <p className="product-page__eyebrow">Catalog</p>
-        <h1 className="product-page__title">Products</h1>
-        <p className="product-page__message product-page__message--error">
-          Error: {error}
-        </p>
-      </main>
+      <Container component="main" maxWidth="lg" sx={{ py: { xs: 4, md: 7 } }}>
+        <Stack spacing={2.5}>
+          <Typography variant="overline">Catalog</Typography>
+          <Typography variant="h3" component="h1">
+            Products
+          </Typography>
+          <Alert severity="error">Error: {error}</Alert>
+        </Stack>
+      </Container>
     );
   }
 
@@ -49,50 +67,105 @@ export default function ProductPage() {
   });
 
   return (
-    <main className="product-page">
-      <header className="product-page__header">
-        <div>
-          <p className="product-page__eyebrow">Catalog</p>
-          <h1 className="product-page__title">Products</h1>
-          <p className="product-page__summary">
-            A quick overview of the current product list.
-          </p>
-        </div>
-        <div className="product-page__count">
-          <span>{products.length}</span>
-          <p>items</p>
-        </div>
-      </header>
+    <Container component="main" maxWidth="lg" sx={{ py: { xs: 4, md: 7 } }}>
+      <Stack spacing={3}>
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          sx={{
+            justifyContent: "space-between",
+            alignItems: { xs: "flex-start", sm: "center" },
+          }}
+          spacing={2}
+        >
+          <Stack spacing={0.5}>
+            <Typography variant="overline">Catalog</Typography>
+            <Typography variant="h3" component="h1">
+              Products
+            </Typography>
+            <Typography color="text.secondary">
+              A quick overview of the current product list.
+            </Typography>
+          </Stack>
+          <Chip
+            color="primary"
+            label={`${products.length} items`}
+            sx={{
+              height: 44,
+              borderRadius: 999,
+              px: 1,
+              "& .MuiChip-label": {
+                fontSize: "1rem",
+                fontWeight: 700,
+              },
+            }}
+          />
+        </Stack>
 
-      <ul className="product-grid">
-        {products.map((product) => (
-          <li className="product-card" key={product.id}>
-            <div className="product-card__top">
-              <h2>{product.name}</h2>
-              <span className="product-card__price">
-                {currencyFormatter.format(product.price)}
-              </span>
-            </div>
+        <Grid container spacing={2.5} aria-live="polite">
+          {products.map((product) => (
+            <Grid key={product.id} size={{ xs: 12, md: 6 }}>
+              <Card sx={{ height: "100%" }}>
+                <CardContent>
+                  <Stack
+                    direction="row"
+                    sx={{ justifyContent: "space-between", gap: 2 }}
+                  >
+                    <Typography variant="h5" component="h2">
+                      {product.name}
+                    </Typography>
+                    <Typography
+                      variant="h6"
+                      color="primary"
+                      sx={{ fontWeight: 700 }}
+                    >
+                      {currencyFormatter.format(product.price)}
+                    </Typography>
+                  </Stack>
 
-            <dl className="product-card__details">
-              <div>
-                <dt>Type</dt>
-                <dd>{product.type.name}</dd>
-              </div>
-              <div>
-                <dt>Size</dt>
-                <dd>{product.size}</dd>
-              </div>
-              <div>
-                <dt>Manufacturer</dt>
-                <a href={`/manufacturers/${product.manufacturer.id}/products`}>
-                  {product.manufacturer.name}
-                </a>
-              </div>
-            </dl>
-          </li>
-        ))}
-      </ul>
-    </main>
+                  <Divider sx={{ my: 1.75 }} />
+
+                  <Stack spacing={1.25}>
+                    <Stack
+                      direction="row"
+                      sx={{ justifyContent: "space-between", gap: 2 }}
+                    >
+                      <Typography color="text.secondary">Type</Typography>
+                      <Typography sx={{ fontWeight: 600 }}>
+                        {product.type.name}
+                      </Typography>
+                    </Stack>
+                    <Stack
+                      direction="row"
+                      sx={{ justifyContent: "space-between", gap: 2 }}
+                    >
+                      <Typography color="text.secondary">Size</Typography>
+                      <Typography sx={{ fontWeight: 600 }}>
+                        {product.size}
+                      </Typography>
+                    </Stack>
+                    <Stack
+                      direction="row"
+                      sx={{ justifyContent: "space-between", gap: 2 }}
+                    >
+                      <Typography color="text.secondary">
+                        Manufacturer
+                      </Typography>
+                      <Link
+                        component={RouterLink}
+                        to={`/manufacturers/${product.manufacturer.id}/products`}
+                        underline="hover"
+                        sx={{ fontWeight: 700 }}
+                      >
+                        {product.manufacturer.name}
+                      </Link>
+                    </Stack>
+                  </Stack>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Stack>
+    </Container>
   );
 }

@@ -7,6 +7,7 @@ import AboutPage from "./pages/AboutPage";
 import ManufacturerPage from "./pages/ManufacturerPage";
 import "./css/index.css";
 import App from "./App.tsx";
+import AppThemeProvider from "./theme/AppThemeProvider";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <AppThemeProvider>
+      <RouterProvider router={router} />
+    </AppThemeProvider>
   </StrictMode>,
 );
