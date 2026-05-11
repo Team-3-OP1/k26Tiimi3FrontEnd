@@ -14,11 +14,8 @@ RUN npm ci
 # Copy source
 COPY . .
 
-# Build arg for backend URL (passed at docker build time)
-ARG VITE_API_URL=http://localhost:8080
-ENV VITE_API_URL=$VITE_API_URL
-
-# Build the app
+# Build the app with production environment
+# The build uses .env.production file which contains the correct backend URL
 RUN npm run build
 
 # ============================
