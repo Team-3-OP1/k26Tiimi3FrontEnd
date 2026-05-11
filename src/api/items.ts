@@ -31,7 +31,9 @@ type ApiProduct = {
 };
 
 export async function fetchProducts(): Promise<Product[]> {
-  const res = await fetch("http://localhost:8080/api/tuotteet");
+  // const res = await fetch("http://localhost:8080/api/tuotteet");
+const BASE_URL = import.meta.env.VITE_API_URL ?? "";
+const res = await fetch(`${BASE_URL}/api/tuotteet`);
   if (!res.ok) {
     throw new Error("Failed to fetch products");
   }
@@ -52,9 +54,12 @@ export async function fetchProducts(): Promise<Product[]> {
 export async function fetchManufacturerProducts(
   id: number,
 ): Promise<Product[]> {
-  const res = await fetch(
-    `http://localhost:8080/api/valmistaja/${id}/vaatteet`,
-  );
+
+  //const res = await fetch(
+  //  `http://localhost:8080/api/valmistaja/${id}/vaatteet`,
+  //);
+  const BASE_URL = import.meta.env.VITE_API_URL ?? "";
+  const res = await fetch(`${BASE_URL}/api/valmistaja/${id}/vaatteet`);
   if (!res.ok) {
     throw new Error("Failed to fetch manufacturer products");
   }
