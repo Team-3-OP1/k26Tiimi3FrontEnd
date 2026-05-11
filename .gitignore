@@ -22,5 +22,12 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-.env
-.env.*
+
+# Environment files
+.env                    # Local overrides (never commit)
+.env.local              # Local development overrides
+.env.*.local            # Environment-specific local overrides
+
+# Allow environment configurations for dev/prod
+!.env.development
+!.env.production
