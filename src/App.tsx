@@ -28,6 +28,10 @@ function App() {
     { label: "About Us", to: "/about" },
   ];
 
+  if (user) {
+    navItems.push({ label: "My Reservations", to: "/omat-varaukset" });
+  }
+
   return (
     <Box sx={{ minHeight: "100vh", backgroundColor: "background.default" }}>
       <AppBar

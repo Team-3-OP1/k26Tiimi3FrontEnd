@@ -121,6 +121,9 @@ export async function login(
     }
 
     sessionStorage.setItem("JWT Token", account.token);
+    if (account.id) {
+      sessionStorage.setItem("asiakasId", account.id.toString());
+    }
 
     // Ensure returned object conforms to UserAccount shape
     return account as UserAccount;

@@ -1,5 +1,5 @@
 import type { Product } from "../types/Product";
-import { fetchProducts } from "../api/items";
+import { fetchProducts, authFetch } from "../api/items";
 import { useEffect, useState } from "react";
 import {
   Alert,
@@ -12,6 +12,7 @@ import {
   Link,
   Stack,
   Typography,
+  Button,
 } from "@mui/material";
 import { Link as RouterLink } from "react-router";
 
@@ -32,6 +33,33 @@ export default function ProductPage() {
         setLoading(false);
       });
   }, []);
+
+  const handleReserve = async (productId: number) => {
+    const asiakasId = sessionStorage.getItem("asiakasId");
+
+    if (!asiakasId) {
+      alert("Kirjaudu sisään varataksesi tuotteen.");
+      return;
+    }
+
+    try {
+      const response = await authFetch(
+        `/api/varaukset?asiakasId=${asiakasId}&vaateId=${productId}`,
+        {
+          method: "POST",
+        },
+      );
+
+      if (response.ok) {
+        alert("Tuote on varattu!");
+      } else {
+        const errorData = await response.text();
+        alert("Varaus epäonnistui: " + errorData);
+      }
+    } catch (err) {
+      alert("Yhteysvirhe palvelimeen.");
+    }
+  };
 
   if (loading) {
     return (
@@ -160,6 +188,15 @@ export default function ProductPage() {
                       </Link>
                     </Stack>
                   </Stack>
+
+                  <Button
+                    variant="contained"
+                    fullWidth
+                    sx={{ mt: 3 }}
+                    onClick={() => handleReserve(product.id)}
+                  >
+                    Varaa tuote
+                  </Button>
                 </CardContent>
               </Card>
             </Grid>
