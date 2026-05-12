@@ -8,6 +8,7 @@ import {
   Grid,
   Alert,
   CircularProgress,
+  Button,
 } from "@mui/material";
 import { authFetch } from "../api/items";
 
@@ -16,6 +17,7 @@ interface Reservation {
   varausAika: string;
   tila: string;
   vaate: {
+    id: number;
     name: string;
     price: number;
     size: string;
@@ -51,6 +53,25 @@ export default function MyReservations() {
         setLoading(false);
       });
   }, []);
+
+  const handleDelete = async (reservationId: number) => {
+    if (!window.confirm("Haluatko varmasti peruuttaa tämän varauksen?")) return;
+
+    try {
+      const response = await authFetch(`/api/varaukset/${reservationId}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        setReservations(reservations.filter((res) => res.id !== reservationId));
+        alert("Varaus peruutettu.");
+      } else {
+        alert("Peruutus epäonnistui.");
+      }
+    } catch (err) {
+      alert("Yhteysvirhe.");
+    }
+  };
 
   if (loading) {
     return (
@@ -108,11 +129,22 @@ export default function MyReservations() {
                           textTransform: "uppercase",
                           fontWeight: 700,
                           color: "success.main",
+                          mb: 1,
                         }}
                       >
                         {res.tila}
                       </Typography>
                     </Stack>
+                  </Stack>
+                  <Stack direction="row" sx={{ justifyContent: "flex-end" }}>
+                    <Button
+                      variant="outlined"
+                      color="error"
+                      size="small"
+                      onClick={() => handleDelete(res.id)}
+                    >
+                      Peruuta varaus
+                    </Button>
                   </Stack>
                 </CardContent>
               </Card>

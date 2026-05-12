@@ -38,7 +38,7 @@ export default function ProductPage() {
     const asiakasId = sessionStorage.getItem("asiakasId");
 
     if (!asiakasId) {
-      alert("Kirjaudu sisään varataksesi tuotteen.");
+      alert("Ole hyvä ja kirjaudu sisään varataksesi tuotteen.");
       return;
     }
 
@@ -51,13 +51,14 @@ export default function ProductPage() {
       );
 
       if (response.ok) {
-        alert("Tuote on varattu!");
+        alert("Tuote varattu onnistuneesti!");
+      } else if (response.status === 401 || response.status === 403) {
+        alert("Istuntosi on vanhentunut. Kirjaudu uudelleen sisään.");
       } else {
-        const errorData = await response.text();
-        alert("Varaus epäonnistui: " + errorData);
+        alert("Varaus epäonnistui. Tuote saattaa olla jo varattu.");
       }
-    } catch (err) {
-      alert("Yhteysvirhe palvelimeen.");
+    } catch (error) {
+      alert("Ole hyvä ja kirjaudu sisään varataksesi tuotteen.");
     }
   };
 
