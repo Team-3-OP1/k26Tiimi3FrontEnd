@@ -16,6 +16,9 @@ type Props = {
 
 export default function RegisterForm({ onSuccess }: Props) {
   const [username, setUsername] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -38,8 +41,19 @@ export default function RegisterForm({ onSuccess }: Props) {
     setError(null);
     setSuccess(null);
 
-    if (!username.trim() || !password) {
+    if (
+      !username.trim() ||
+      !firstName.trim() ||
+      !lastName.trim() ||
+      !email.trim() ||
+      !password
+    ) {
       setError("Please fill all required fields.");
+      return;
+    }
+
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      setError("Please provide a valid email address.");
       return;
     }
 
@@ -50,11 +64,20 @@ export default function RegisterForm({ onSuccess }: Props) {
 
     setLoading(true);
     try {
-      await register(username.trim(), password);
+      await register(
+        username.trim(),
+        firstName.trim(),
+        lastName.trim(),
+        email.trim(),
+        password,
+      );
 
       setSuccess("Registration successful! Redirecting to login...");
 
       setUsername("");
+      setFirstName("");
+      setLastName("");
+      setEmail("");
       setPassword("");
       setConfirmPassword("");
     } catch (err: unknown) {
@@ -85,6 +108,31 @@ export default function RegisterForm({ onSuccess }: Props) {
           label="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          fullWidth
+          required
+        />
+
+        <TextField
+          label="First name"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+          fullWidth
+          required
+        />
+
+        <TextField
+          label="Last name"
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+          fullWidth
+          required
+        />
+
+        <TextField
+          label="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          type="email"
           fullWidth
           required
         />

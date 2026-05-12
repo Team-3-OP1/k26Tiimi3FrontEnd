@@ -132,13 +132,16 @@ export async function login(
 
 export async function register(
   username: string,
+  firstName: string,
+  lastName: string,
+  email: string,
   password: string,
 ): Promise<void> {
   try {
     const res = await fetchWithTimeout(getApiUrl("/api/auth/register"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify({ username, firstName, lastName, email, password }),
     });
 
     if (!res.ok) {
