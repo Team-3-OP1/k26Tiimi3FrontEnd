@@ -13,14 +13,25 @@ import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
 import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useContext } from "react";
-import { Link as RouterLink, Outlet, useLocation } from "react-router";
+import {
+  Link as RouterLink,
+  Outlet,
+  useLocation,
+  useNavigate,
+} from "react-router";
 import { ColorModeContext } from "./theme/colorModeContext";
 import { useUser } from "./context/user";
 
 function App() {
   const location = useLocation();
+  const navigate = useNavigate();
   const { mode, toggleColorMode } = useContext(ColorModeContext);
   const { user, logout } = useUser();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
 
   const navItems = [
     { label: "Home", to: "/" },
@@ -30,6 +41,7 @@ function App() {
 
   if (user) {
     navItems.push({ label: "My Reservations", to: "/omat-varaukset" });
+    navItems.push({ label: "Profile", to: "/profile" });
   }
 
   return (
@@ -130,7 +142,7 @@ function App() {
                     Logged in as {user.username}
                   </Typography>
                   <Button
-                    onClick={logout}
+                    onClick={handleLogout}
                     variant="outlined"
                     size="medium"
                     endIcon={<LogoutIcon />}

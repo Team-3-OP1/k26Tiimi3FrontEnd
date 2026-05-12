@@ -49,6 +49,11 @@ export default function LoginForm({ onSuccess }: Props) {
         username: account.username || username.trim(),
       };
 
+      sessionStorage.setItem("username", loggedInUser.username);
+      if (account.token) sessionStorage.setItem("JWT Token", account.token);
+      if (account.id)
+        sessionStorage.setItem("asiakasId", account.id.toString());
+
       setUser(loggedInUser);
       setSuccess(`Logged in successfully as ${loggedInUser.username}`);
       if (onSuccess) onSuccess();

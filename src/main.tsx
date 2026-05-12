@@ -8,6 +8,7 @@ import ManufacturerPage from "./pages/ManufacturerPage";
 import LoginDialog from "./pages/LoginDialog";
 import RegisterDialog from "./pages/RegisterDialog";
 import MyReservations from "./pages/MyReservations";
+import ProfilePage from "./pages/ProfilePage";
 import "./css/index.css";
 import App from "./App.tsx";
 import AppThemeProvider from "./theme/AppThemeProvider";
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
       {
         path: "omat-varaukset",
         element: <MyReservations />,
+      },
+      {
+        path: "profile",
+        element: <ProfilePage />,
       },
     ],
   },
