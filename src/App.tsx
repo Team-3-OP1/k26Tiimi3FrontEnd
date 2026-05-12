@@ -11,13 +11,16 @@ import {
 } from "@mui/material";
 import DarkModeRoundedIcon from "@mui/icons-material/DarkModeRounded";
 import LightModeRoundedIcon from "@mui/icons-material/LightModeRounded";
+import LogoutIcon from "@mui/icons-material/Logout";
 import { useContext } from "react";
 import { Link as RouterLink, Outlet, useLocation } from "react-router";
 import { ColorModeContext } from "./theme/colorModeContext";
+import { useUser } from "./context/user";
 
 function App() {
   const location = useLocation();
   const { mode, toggleColorMode } = useContext(ColorModeContext);
+  const { user, logout } = useUser();
 
   const navItems = [
     { label: "Home", to: "/" },
@@ -111,6 +114,68 @@ function App() {
                   )}
                 </IconButton>
               </Tooltip>
+              {user ? (
+                <>
+                  <Typography
+                    sx={{
+                      fontWeight: 600,
+                      fontSize: "0.95rem",
+                      color: "primary.main",
+                    }}
+                  >
+                    Logged in as {user.username}
+                  </Typography>
+                  <Button
+                    onClick={logout}
+                    variant="outlined"
+                    size="medium"
+                    endIcon={<LogoutIcon />}
+                    sx={{
+                      borderRadius: 999,
+                      textTransform: "none",
+                      fontWeight: 700,
+                    }}
+                  >
+                    Logout
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button
+                    component={RouterLink}
+                    to="/login"
+                    variant={
+                      location.pathname === "/login" ? "contained" : "outlined"
+                    }
+                    size="medium"
+                    sx={{
+                      borderRadius: 999,
+                      textTransform: "none",
+                      fontWeight: 700,
+                    }}
+                  >
+                    Sign in
+                  </Button>
+
+                  <Button
+                    component={RouterLink}
+                    to="/register"
+                    variant={
+                      location.pathname === "/register"
+                        ? "contained"
+                        : "outlined"
+                    }
+                    size="medium"
+                    sx={{
+                      borderRadius: 999,
+                      textTransform: "none",
+                      fontWeight: 700,
+                    }}
+                  >
+                    Register
+                  </Button>
+                </>
+              )}
             </Stack>
           </Toolbar>
         </Container>

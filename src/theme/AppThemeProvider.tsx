@@ -1,6 +1,7 @@
 import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { ColorModeContext, type ColorMode } from "./colorModeContext";
+import { UserProvider } from "../context/UserContext";
 
 const COLOR_MODE_STORAGE_KEY = "tiimi3-color-mode";
 
@@ -92,11 +93,13 @@ export default function AppThemeProvider({ children }: AppThemeProviderProps) {
   );
 
   return (
-    <ColorModeContext.Provider value={colorMode}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        {children}
-      </ThemeProvider>
-    </ColorModeContext.Provider>
+    <UserProvider>
+      <ColorModeContext.Provider value={colorMode}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          {children}
+        </ThemeProvider>
+      </ColorModeContext.Provider>
+    </UserProvider>
   );
 }
