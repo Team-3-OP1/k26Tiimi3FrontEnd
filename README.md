@@ -1,73 +1,84 @@
-# React + TypeScript + Vite
+# Team 3 Frontend (k26Tiimi3FrontEnd)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend for Team 3’s product catalog and reservation flow.  
+Built with React, TypeScript, Vite, React Router, and Material UI.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Browse product catalog
+- View products by manufacturer
+- Register and sign in
+- Reserve products (authenticated users)
+- View and cancel own reservations
+- Manage profile (including account deletion)
+- Light/dark theme toggle
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React 19
+- TypeScript
+- Vite
+- React Router 7
+- Material UI (MUI)
+- ESLint
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Prerequisites
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- Node.js 20+ (recommended)
+- npm
+- Running backend API
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Installation
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Environment Configuration
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+The app reads Vite environment variables.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+1. Start from `/home/runner/work/k26Tiimi3FrontEnd/k26Tiimi3FrontEnd/.env.example`
+2. Create `/home/runner/work/k26Tiimi3FrontEnd/k26Tiimi3FrontEnd/.env.development` (local) or `/home/runner/work/k26Tiimi3FrontEnd/k26Tiimi3FrontEnd/.env.production` (production)
+3. Configure:
+
+```env
+VITE_API_URL=http://localhost:8080
+VITE_API_TIMEOUT=10000
+VITE_API_DEBUG=false
 ```
+
+## Available Scripts
+
+```bash
+npm run dev      # Start development server
+npm run build    # Type-check and build production bundle
+npm run preview  # Preview production build locally
+npm run lint     # Run ESLint
+```
+
+## Project Structure
+
+```text
+src/
+  api/           # API calls and auth fetch helpers
+  components/    # Shared UI forms/components
+  config/        # Environment-based API configuration
+  context/       # User context and provider
+  pages/         # Route-level pages
+  theme/         # MUI theming and color mode
+  types/         # Shared TypeScript types
+```
+
+## Deployment
+
+Deployment instructions for Rahti/OpenShift are in:
+
+- `/home/runner/work/k26Tiimi3FrontEnd/k26Tiimi3FrontEnd/DEPLOYMENT.md`
+
+## Notes
+
+- Authentication data is stored in `sessionStorage`.
+- Backend endpoints are expected under `/api/*` (configured via `VITE_API_URL`).
